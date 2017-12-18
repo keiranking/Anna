@@ -9,6 +9,7 @@
 // GLOBAL CONSTANTS ├──────────────────────────────────────────────────────────
 
 // GLOBAL DOM VARIABLES -------------------------------------------------------
+let leaderboard = document.getElementById("leader-table");
 let leaderTable = document.getElementById("leader-table");
 let scoreTable = document.getElementById("score-table");
 let note = null;
@@ -79,6 +80,7 @@ class Game {
       for (const name of names) {
         this.seat(name);
       }
+      this.leaderboard = this.ranked();
     }
   }
 
@@ -87,15 +89,34 @@ class Game {
     console.log(name + " added to game.")
   }
 
-  sorted() {
+  ranked() {
     return Object.keys(this.players).sort(function(a, b) {
-      return a.sum() - b.sum();
+      return this.players[a].sum() - this.players[b].sum();
     }.bind(this));
+  }
+
+  publish() {
+    // let lb = document.createElement('TABLE');
+    // lb.setAttribute('id', "leader-table");
+    for (let i = 0; i < this.players.list().length; i++) {
+      let row = document.createElement('TR');
+      row.setAttribute('data-rank', i + 1);
+      let name = document.createElement('TD');
+      name.innerHTML = this.ranked()[i];
+      let dist = document.createElement('TD');
+      if (i > 0) {
+        dist.innerHTML = "+" + (this.players[this.ranked()[0]].sum() - this.players[this.ranked()[i]].sum());
+      }
+      row.appendChild(name);
+      row.appendChild(dist);
+      leaderTable.appendChild(row);
+    }
   }
 }
 
 let g = new Game(["Keiran", "Rae", "Joana", "Monique"]);
-console.log(g.players.list());
+g.publish();
+console.log(g.players.list(), g.leaderboard);
 
 class Notification {
   constructor(message, lifetime = undefined) {
