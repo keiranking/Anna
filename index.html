@@ -1,6 +1,7 @@
 <html>
 <head>
   <link rel="stylesheet" type="text/css" href="style.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
 </head>
 <body>
   <div id="main">
@@ -9,7 +10,12 @@
           <h2>Leaderboard</h2>
           <h4 id="date"></h4>
           <div id="lb-tools">
-            <a>Edit</a>
+            <button id="screenshot" type="button" data-tooltip="Save game photo">
+              <i class="fas fa-camera-retro fa-fw"></i>
+            </button>
+            <button id="toggle-sc" type="button" data-tooltip="Edit scores">
+              <i class="fas fa-pencil-alt fa-fw"></i>
+            </button>
           </div>
         </div>
         <div id="lb-body">
@@ -33,6 +39,7 @@
     <h3>Help</h3>
     <p>Click the time to start or pause the clock.</p>
   </div> -->
+  <script src="third_party/fontawesome-all.js"></script>
   <script src="third_party/moment.js"></script>
   <script src="anna.js"></script>
 </body>

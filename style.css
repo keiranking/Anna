@@ -139,8 +139,43 @@ body {
 
 #lb-tools {
   position: absolute;
-  right: 5px;
+  right: 10px;
   bottom: 10px;
+}
+
+#lb-tools button {
+  /* width: 40px; */
+  /* height: 40px; */
+  margin: 0 0 0 8px;
+  padding: 0;
+  font-size: 16pt;
+  text-align: center;
+  /* border-radius: 20px; */
+  color: var(--lb-light);
+  background-color: var(--lb-dark);
+  border: none;
+  /* border: 1px solid var(--lb-light); */
+}
+
+#lb-tools button:hover {
+  color: white;
+}
+
+#lb-tools button:hover:after {
+  content: attr(data-tooltip);
+  margin: 4px 0;
+  padding: 4px;
+  border: 1px solid var(--lb);
+  border-radius: 2px;
+  background: white;
+  color: var(--lb);
+  font-size: 9pt;
+  /*font-weight: 400;*/
+  position: absolute;
+  right: 0;
+  top: 120%;
+  white-space: nowrap;
+  z-index: 20;
 }
 
 #lb-body {
