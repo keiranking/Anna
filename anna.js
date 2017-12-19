@@ -9,9 +9,9 @@
 // GLOBAL CONSTANTS ├──────────────────────────────────────────────────────────
 
 // GLOBAL DOM VARIABLES -------------------------------------------------------
-let leaderboard = document.getElementById("leader-table");
+let leaderboard = document.getElementById("leaderboard");
 let leaderTable = document.getElementById("leader-table");
-let scoreTable = document.getElementById("score-table");
+let scorecard = document.getElementById("scorecard");
 let note = null;
 
 // DATA TYPE FUNCTIONS --------------------------------------------------------
@@ -76,6 +76,7 @@ class Game {
     console.log("New game.")
     this.players = {};
     this.leaderboard = [];
+    this.rounds = ['333', '344', '344', '444', '3333', '3334', '3344', '3444', '4444'];
     if (names) {
       for (const name of names) {
         this.seat(name);
@@ -95,15 +96,17 @@ class Game {
     }.bind(this));
   }
 
-  publish() {
-    // let lb = document.createElement('TABLE');
-    // lb.setAttribute('id', "leader-table");
+  publishLeaderboard() {
+    // Update leaderboard
+    leaderTable.innerHTML = "";
     for (let i = 0; i < this.players.list().length; i++) {
       let row = document.createElement('TR');
       row.setAttribute('data-rank', i + 1);
       let name = document.createElement('TD');
+      name.setAttribute('class', 'name');
       name.innerHTML = this.ranked()[i];
       let dist = document.createElement('TD');
+      dist.setAttribute('class', 'distance');
       if (i > 0) {
         dist.innerHTML = "+" + (this.players[this.ranked()[0]].sum() - this.players[this.ranked()[i]].sum());
       }
@@ -112,11 +115,11 @@ class Game {
       leaderTable.appendChild(row);
     }
   }
-}
 
-let g = new Game(["Keiran", "Rae", "Joana", "Monique"]);
-g.publish();
-console.log(g.players.list(), g.leaderboard);
+  publishScorecard() {
+
+  }
+}
 
 class Notification {
   constructor(message, lifetime = undefined) {
@@ -148,8 +151,6 @@ class Notification {
 }
 
 // FUNCTIONS ------------------------------------------------------------------
-
-
 function show(content) {
   if (note) {
     note.dismiss();
@@ -158,4 +159,6 @@ function show(content) {
 }
 
 // MAIN -----------------------------------------------------------------------
-// report();
+let g = new Game(["Keiran", "Rae", "Joana", "Moni", "Dan"]);
+g.publishLeaderboard();
+console.log(g.players.list(), g.leaderboard);
