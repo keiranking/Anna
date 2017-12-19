@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css?family=Libre+Franklin:200,300,600');
+/* @import url('https://fonts.googleapis.com/css?family=Libre+Franklin:200,300,600'); */
+@import url('https://fonts.googleapis.com/css?family=Libre+Franklin:300,300i,600|Source+Code+Pro:300,400');
 
 :root {
   --black: black;
@@ -7,17 +8,21 @@
   --dk-grey: #444;
   --hover: #55b8fe;
   --lb: #04488b;
-  --lb-header: #033465;
-  --lb-hover: #066fd8;
+  --lb-header: #033668;
+  --lb-light: #4376a8;
   --dark: rgba(0, 0, 0, .15);
   --darker: rgba(0, 0, 0, .5);
   --light: rgba(255, 255, 255, .25);
   --lighter: rgba(255, 255, 255, .5);
+  --score-bkgd: #f2f8ff;
+  --score: #7fbefb;
+  /* --score: #81a4c5; */
   --warning: red;
 }
 
 body {
   font-family: 'Libre Franklin', 'Helvetica', 'Arial', sans-serif;
+  font-weight: 300;
   margin: 0;
   padding: 0;
   text-align: center;
@@ -40,7 +45,6 @@ body {
 }
 
 #credits a {
-  font-weight: 500;
   color: var(--med-grey);
   text-decoration: none;
 }
@@ -68,7 +72,7 @@ body {
 }
 
 #footer select {
-  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica', 'Arial', sans-serif;
+  font-family: 'Libre Franklin', 'Helvetica', 'Arial', sans-serif;
   font-size: 9.5pt;
   margin: 0 5px 0 0;
   padding: 0;
@@ -90,34 +94,21 @@ body {
   display: none;
 }
 
-.labels {
-  width: auto;
-  float: left;
-  padding: 0;
-}
-
-.labels h3 {
-  color: white;
-}
-
-.labels td {
-  color: var(--lb);
-  text-align: center;
-  letter-spacing: .05em;
-  border-top: 1px dashed var(--lb);
-}
-
 #leaderboard {
   width: auto;
   /* display: inline-block; */
   float: left;
   margin: 15px 0 0 15px;
   border-radius: 10px;
-  /* border: 1px solid var(--lb); */
+  border: 1px solid var(--lb);
   position: relative;
   /* padding: 8px; */
   background-color: var(--lb);
   text-align: left;
+}
+
+#leaderboard.open {
+  border-radius: 10px 0 0 10px;
 }
 
 #leaderboard h2 {
@@ -132,7 +123,11 @@ body {
   border-radius: 10px 10px 0 0;
   padding: 10px;
   height: 50px;
-  color: var(--light);
+  color: var(--lb-light);
+}
+
+#lb-header.open {
+  border-radius: 10px 0 0 0;
 }
 
 #lb-tools {
@@ -140,34 +135,34 @@ body {
   float: right;
 }
 
-#lb-table {
+#lb-body {
   /* min-height: 380px; */
   /* background-color: var(--lb); */
   /* border-radius: 0 0 10px 10px; */
 }
 
-#lb-table table {
+#lb-body table {
   color: white;
   font-size: 2.5em;
   margin: 0;
   border-collapse: collapse;
 }
 
-#lb-table tr {
-  border-top: 2px solid var(--light);
+#lb-body tr {
+  border-top: 2px solid var(--lb-light);
 }
 
-#lb-table tr:hover {
+#lb-body tr:hover {
   /* background-color: var(--lb-hover); */
 }
 
-#lb-table td.distance {
-  color: var(--lighter);
+#lb-body td.distance {
+  color: var(--lb-light);
   padding: 5px 10px 5px 15px;
   /* border-top: 1px solid white; */
 }
 
-#lb-table td.name {
+#lb-body td.name {
   min-width: 160px;
   color: white;
   letter-spacing: -0.03em;
@@ -208,24 +203,12 @@ body {
 }
 
 #scorecard {
-  /* display: inline-block; */
   margin-top: 15px;
+  padding-left: 15px;
   float: left;
   color: var(--lb);
-}
-
-#scorecard h3 {
-  margin: 5px 0 0 0;
-  padding: 0;
-}
-
-#scorecard h4 {
-  margin: 0;
-  padding: 0;
-}
-
-#scorecard .header {
-  height: 50px;
+  border-radius: 0 10px 10px 0;
+  border: 1px solid var(--score);
 }
 
 #scorecard table {
@@ -233,31 +216,54 @@ body {
 }
 
 #scorecard td {
-  height: 2.5em;
-  padding: 3px 0;
+  height: 1em;
+  text-align: right;
+  margin: 0;
+  padding: 3px 3px 3px 0;
   overflow: hidden;
 }
 
-.scores {
-  /* width: 120px; */
-  width: auto;
-  float: left;
-  padding: 0 1px;
-  /* display: inline-block; */
-}
-
-.scores td {
+#scorecard .round {
+  color: var(--score);
   text-align: center;
-  border-top: 1px dashed var(--lb);
-  min-width: 80px;
+  letter-spacing: .05em;
+  font-size: 18pt;
+  font-style: italic;
+  padding-right: 6px;
+  border-top: 1px dashed var(--score);
 }
 
-.scores td:hover {
-  /* background-color: var(--dark); */
+#scorecard .name {
+  font-size: 12pt;
+  font-weight: 600;
+  color: var(--lb);
+  padding: 5px 3px 0 3px;
+  min-width: 60px;
+  /* font-weight: 600; */
+
 }
 
-.shaded {
-  background-color: var(--lt-grey);
+#scorecard .score {
+  font-size: 24pt;
+  height: 1.2em;
+  padding-left: 25px;
+  color: var(--score);
+  border-top: 1px dashed var(--score);
+}
+
+#scorecard .shaded {
+  background-color: var(--score-bkgd);
+}
+
+#scorecard .sum {
+  font-size: 24pt;
+  padding: 0 3px 3px 10px;
+  font-weight: 600;
+  color: var(--lb);
+}
+
+#scorecard .tools {
+  min-width: 20px;
 }
 
 .warning {

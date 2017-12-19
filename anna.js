@@ -10,9 +10,9 @@
 
 // GLOBAL DOM VARIABLES -------------------------------------------------------
 let leaderboard = document.getElementById("leaderboard");
-let leaderTable = document.getElementById("leader-table");
+let leaderTable = document.getElementById("lb-table");
 let scorecard = document.getElementById("scorecard");
-let scoreTable = document.getElementById("score-table");
+let scoreTable = document.getElementById("sc-table");
 let note = null;
 
 // DATA TYPE FUNCTIONS --------------------------------------------------------
@@ -89,6 +89,9 @@ class Game {
 
   seat(name) {
     this.players[name] = [];
+    for (let i = 0; i < this.rounds.length; i++) {
+      this.players[name].push((0).random(180));
+    }
     console.log(name + " added to game.")
   }
 
@@ -110,7 +113,7 @@ class Game {
       let dist = document.createElement('TD');
       dist.setAttribute('class', 'distance');
       if (i > 0) {
-        dist.innerHTML = "+" + (this.players[this.ranked()[0]].sum() - this.players[this.ranked()[i]].sum());
+        dist.innerHTML = "+" + (this.players[this.ranked()[i]].sum() - this.players[this.ranked()[0]].sum());
       }
       row.appendChild(name);
       row.appendChild(dist);
@@ -129,6 +132,7 @@ class Game {
       let sum = document.createElement('TD');
       if (j) {
         name.innerHTML = this.players.list()[j - 1];
+        name.setAttribute('contenteditable', 'true');
         name.classList.add("name");
         sum.innerHTML = this.players[this.players.list()[j - 1]].sum();
         sum.classList.add("sum");
@@ -140,6 +144,12 @@ class Game {
       names.appendChild(name);
       sums.appendChild(sum);
     }
+    let nameTools = document.createElement('TD');
+    nameTools.classList.add("tools");
+    let sumTools = document.createElement('TD');
+    sumTools.classList.add("tools");
+    names.appendChild(nameTools);
+    sums.appendChild(sumTools);
     scoreTable.appendChild(names);
     scoreTable.appendChild(sums);
     for (let i = 0; i < this.rounds.length; i++) {
@@ -151,6 +161,7 @@ class Game {
           cell.innerHTML = this.rounds[i];
         } else {
           cell.classList.add("score");
+          cell.setAttribute('contenteditable', 'true');
           cell.innerHTML = this.players[this.players.list()[j - 1]][i] || "";
         }
         if (j % 2){
@@ -158,50 +169,12 @@ class Game {
         }
         round.appendChild(cell);
       }
+      let roundTools = document.createElement('TD');
+      roundTools.classList.add("tools");
+      round.appendChild(roundTools);
       scoreTable.appendChild(round);
     }
-
-    // scorecard.appendChild(this.publishColumn("Rd", this.rounds));
-    // scorecard.firstChild.classList.remove("scores");
-    // scorecard.firstChild.classList.add("labels");
-    // for (const player of this.players.list()) {
-    //   scorecard.appendChild(this.publishColumn(player, this.players[player]));
-    // }
-    // for (let i = 0; i < scorecard.children.length; i++) {
-    //   if (i % 2){
-    //     scorecard.children[i].classList.add("shaded");
-    //   }
-    // }
     console.log("Scorecard published.");
-  }
-
-  publishColumn(player = null, array = null) {
-    let div = document.createElement('DIV');
-    div.classList.add("scores");
-    let header = document.createElement('DIV');
-    header.classList.add("header");
-    let name = document.createElement('H3');
-    let sum = document.createElement('H4');
-
-    name.innerHTML = player || "";
-    sum.innerHTML = this.players[player] ? array.sum() || "" : "";
-    header.appendChild(name);
-    header.appendChild(sum);
-    div.appendChild(header);
-
-    let scores = document.createElement('TABLE');
-    scores.classList.add("score-column");
-    for (let i = 0; i < this.rounds.length; i++) {
-      let tr = document.createElement('TR');
-      let td = document.createElement('TD');
-      td.innerHTML = (i < array.length) ? array[i] : "";
-      td.setAttribute('data-player', player || "");
-      td.setAttribute('contenteditable', 'true');
-      tr.appendChild(td);
-      scores.appendChild(tr);
-    }
-    div.appendChild(scores);
-    return div;
   }
 }
 
