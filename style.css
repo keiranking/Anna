@@ -111,12 +111,12 @@ body {
   width: auto;
   /* display: inline-block; */
   float: left;
-  margin-top: 15px;
-  border-radius: 15px;
-  border: 1px solid var(--lb);
+  margin: 15px 0 0 15px;
+  border-radius: 10px;
+  /* border: 1px solid var(--lb); */
   position: relative;
-  padding: 8px;
-  background-color: white;
+  /* padding: 8px; */
+  background-color: var(--lb);
   text-align: left;
 }
 
@@ -141,8 +141,9 @@ body {
 }
 
 #lb-table {
-  background-color: var(--lb);
-  border-radius: 0 0 10px 10px;
+  /* min-height: 380px; */
+  /* background-color: var(--lb); */
+  /* border-radius: 0 0 10px 10px; */
 }
 
 #lb-table table {
@@ -152,6 +153,10 @@ body {
   border-collapse: collapse;
 }
 
+#lb-table tr {
+  border-top: 2px solid var(--light);
+}
+
 #lb-table tr:hover {
   /* background-color: var(--lb-hover); */
 }
@@ -159,7 +164,7 @@ body {
 #lb-table td.distance {
   color: var(--lighter);
   padding: 5px 10px 5px 15px;
-  border-top: 1px solid white;
+  /* border-top: 1px solid white; */
 }
 
 #lb-table td.name {
@@ -167,7 +172,7 @@ body {
   color: white;
   letter-spacing: -0.03em;
   padding: 5px 0 5px 10px;
-  border-top: 1px solid white;
+  /* border-top: 1px solid white; */
 }
 
 #main {

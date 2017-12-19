@@ -12,7 +12,7 @@
 let leaderboard = document.getElementById("leaderboard");
 let leaderTable = document.getElementById("leader-table");
 let scorecard = document.getElementById("scorecard");
-// let scoreTable = document.getElementById("score-table");
+let scoreTable = document.getElementById("score-table");
 let note = null;
 
 // DATA TYPE FUNCTIONS --------------------------------------------------------
@@ -84,6 +84,7 @@ class Game {
       }
       this.leaderboard = this.ranked();
     }
+    this.publishScorecard();
   }
 
   seat(name) {
@@ -115,22 +116,62 @@ class Game {
       row.appendChild(dist);
       leaderTable.appendChild(row);
     }
+    leaderboard.style.minHeight = scorecard.clientHeight;
     console.log("Leaderboard published.");
   }
 
   publishScorecard() {
-    scorecard.innerHTML = "";
-    scorecard.appendChild(this.publishColumn("Rd", this.rounds));
-    scorecard.firstChild.classList.remove("scores");
-    scorecard.firstChild.classList.add("labels");
-    for (const player of this.players.list()) {
-      scorecard.appendChild(this.publishColumn(player, this.players[player]));
-    }
-    for (let i = 0; i < scorecard.children.length; i++) {
-      if (i % 2){
-        scorecard.children[i].classList.add("shaded");
+    scoreTable.innerHTML = "";
+    let names = document.createElement('TR');
+    let sums = document.createElement('TR');
+    for (let j = 0; j <= this.players.list().length; j++) {
+      let name = document.createElement('TD');
+      let sum = document.createElement('TD');
+      if (j) {
+        name.innerHTML = this.players.list()[j - 1];
+        name.classList.add("name");
+        sum.innerHTML = this.players[this.players.list()[j - 1]].sum();
+        sum.classList.add("sum");
       }
+      if (j % 2){
+        name.classList.add("shaded");
+        sum.classList.add("shaded");
+      }
+      names.appendChild(name);
+      sums.appendChild(sum);
     }
+    scoreTable.appendChild(names);
+    scoreTable.appendChild(sums);
+    for (let i = 0; i < this.rounds.length; i++) {
+      let round = document.createElement('TR');
+      for (let j = 0; j <= this.players.list().length; j++) {
+        let cell = document.createElement('TD');
+        if (!j) {
+          cell.classList.add("round");
+          cell.innerHTML = this.rounds[i];
+        } else {
+          cell.classList.add("score");
+          cell.innerHTML = this.players[this.players.list()[j - 1]][i] || "";
+        }
+        if (j % 2){
+          cell.classList.add("shaded");
+        }
+        round.appendChild(cell);
+      }
+      scoreTable.appendChild(round);
+    }
+
+    // scorecard.appendChild(this.publishColumn("Rd", this.rounds));
+    // scorecard.firstChild.classList.remove("scores");
+    // scorecard.firstChild.classList.add("labels");
+    // for (const player of this.players.list()) {
+    //   scorecard.appendChild(this.publishColumn(player, this.players[player]));
+    // }
+    // for (let i = 0; i < scorecard.children.length; i++) {
+    //   if (i % 2){
+    //     scorecard.children[i].classList.add("shaded");
+    //   }
+    // }
     console.log("Scorecard published.");
   }
 
@@ -202,7 +243,7 @@ function show(content) {
 }
 
 // MAIN -----------------------------------------------------------------------
-let g = new Game(["Keiran", "Rae", "Joana", "Monique-Marie", "Dan"]);
+let g = new Game(["Keiran", "Rae", "Joana", "Monique", "Dan"]);
 g.publishLeaderboard();
 g.publishScorecard();
 console.log(g.players.list(), g.leaderboard);
