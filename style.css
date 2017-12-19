@@ -90,9 +90,27 @@ body {
   display: none;
 }
 
+.labels {
+  width: auto;
+  float: left;
+  padding: 0;
+}
+
+.labels h3 {
+  color: white;
+}
+
+.labels td {
+  color: var(--lb);
+  text-align: center;
+  letter-spacing: .05em;
+  border-top: 1px dashed var(--lb);
+}
+
 #leaderboard {
   width: auto;
-  display: inline-block;
+  /* display: inline-block; */
+  float: left;
   margin-top: 15px;
   border-radius: 15px;
   border: 1px solid var(--lb);
@@ -182,6 +200,59 @@ body {
   font-weight: 600;
   color: var(--med-grey);
   text-transform: uppercase;
+}
+
+#scorecard {
+  /* display: inline-block; */
+  margin-top: 15px;
+  float: left;
+  color: var(--lb);
+}
+
+#scorecard h3 {
+  margin: 5px 0 0 0;
+  padding: 0;
+}
+
+#scorecard h4 {
+  margin: 0;
+  padding: 0;
+}
+
+#scorecard .header {
+  height: 50px;
+}
+
+#scorecard table {
+  border-collapse: collapse;
+}
+
+#scorecard td {
+  height: 2.5em;
+  padding: 3px 0;
+  overflow: hidden;
+}
+
+.scores {
+  /* width: 120px; */
+  width: auto;
+  float: left;
+  padding: 0 1px;
+  /* display: inline-block; */
+}
+
+.scores td {
+  text-align: center;
+  border-top: 1px dashed var(--lb);
+  min-width: 80px;
+}
+
+.scores td:hover {
+  /* background-color: var(--dark); */
+}
+
+.shaded {
+  background-color: var(--lt-grey);
 }
 
 .warning {

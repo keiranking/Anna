@@ -12,6 +12,7 @@
 let leaderboard = document.getElementById("leaderboard");
 let leaderTable = document.getElementById("leader-table");
 let scorecard = document.getElementById("scorecard");
+// let scoreTable = document.getElementById("score-table");
 let note = null;
 
 // DATA TYPE FUNCTIONS --------------------------------------------------------
@@ -103,7 +104,7 @@ class Game {
       let row = document.createElement('TR');
       row.setAttribute('data-rank', i + 1);
       let name = document.createElement('TD');
-      name.setAttribute('class', 'name');
+      name.classList.add('name');
       name.innerHTML = this.ranked()[i];
       let dist = document.createElement('TD');
       dist.setAttribute('class', 'distance');
@@ -114,10 +115,52 @@ class Game {
       row.appendChild(dist);
       leaderTable.appendChild(row);
     }
+    console.log("Leaderboard published.");
   }
 
   publishScorecard() {
+    scorecard.innerHTML = "";
+    scorecard.appendChild(this.publishColumn("Rd", this.rounds));
+    scorecard.firstChild.classList.remove("scores");
+    scorecard.firstChild.classList.add("labels");
+    for (const player of this.players.list()) {
+      scorecard.appendChild(this.publishColumn(player, this.players[player]));
+    }
+    for (let i = 0; i < scorecard.children.length; i++) {
+      if (i % 2){
+        scorecard.children[i].classList.add("shaded");
+      }
+    }
+    console.log("Scorecard published.");
+  }
 
+  publishColumn(player = null, array = null) {
+    let div = document.createElement('DIV');
+    div.classList.add("scores");
+    let header = document.createElement('DIV');
+    header.classList.add("header");
+    let name = document.createElement('H3');
+    let sum = document.createElement('H4');
+
+    name.innerHTML = player || "";
+    sum.innerHTML = this.players[player] ? array.sum() || "" : "";
+    header.appendChild(name);
+    header.appendChild(sum);
+    div.appendChild(header);
+
+    let scores = document.createElement('TABLE');
+    scores.classList.add("score-column");
+    for (let i = 0; i < this.rounds.length; i++) {
+      let tr = document.createElement('TR');
+      let td = document.createElement('TD');
+      td.innerHTML = (i < array.length) ? array[i] : "";
+      td.setAttribute('data-player', player || "");
+      td.setAttribute('contenteditable', 'true');
+      tr.appendChild(td);
+      scores.appendChild(tr);
+    }
+    div.appendChild(scores);
+    return div;
   }
 }
 
@@ -159,6 +202,7 @@ function show(content) {
 }
 
 // MAIN -----------------------------------------------------------------------
-let g = new Game(["Keiran", "Rae", "Joana", "Moni", "Dan"]);
+let g = new Game(["Keiran", "Rae", "Joana", "Monique-Marie", "Dan"]);
 g.publishLeaderboard();
+g.publishScorecard();
 console.log(g.players.list(), g.leaderboard);
