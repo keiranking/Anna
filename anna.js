@@ -119,6 +119,7 @@ class Game {
       row.appendChild(dist);
       leaderTable.appendChild(row);
     }
+    document.getElementById("date").innerHTML = moment().format('ddd, D MMM YYYY');
     leaderboard.style.minHeight = scorecard.clientHeight;
     console.log("Leaderboard published.");
   }

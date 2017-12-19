@@ -3,12 +3,12 @@
 
 :root {
   --black: black;
-  --lt-grey: #eee;
+  /* --lt-grey: #eee; */
   --med-grey: #aaa;
-  --dk-grey: #444;
+  /* --dk-grey: #444; */
   --hover: #55b8fe;
   --lb: #04488b;
-  --lb-header: #033668;
+  --lb-dark: #033668;
   --lb-light: #4376a8;
   --dark: rgba(0, 0, 0, .15);
   --darker: rgba(0, 0, 0, .5);
@@ -17,7 +17,7 @@
   --score-bkgd: #f2f8ff;
   --score: #7fbefb;
   /* --score: #81a4c5; */
-  --warning: red;
+  /* --warning: red; */
 }
 
 body {
@@ -98,10 +98,9 @@ body {
   width: auto;
   /* display: inline-block; */
   float: left;
-  margin: 15px 0 0 15px;
+  margin: 15px 0 0 0;
   border-radius: 10px;
   border: 1px solid var(--lb);
-  position: relative;
   /* padding: 8px; */
   background-color: var(--lb);
   text-align: left;
@@ -111,28 +110,37 @@ body {
   border-radius: 10px 0 0 10px;
 }
 
-#leaderboard h2 {
-  margin: 0;
-  padding: 0;
-  font-size: 1.5em;
-  display: inline-block;
-}
-
 #lb-header {
-  background-color: var(--lb-header);
+  background-color: var(--lb-dark);
   border-radius: 10px 10px 0 0;
   padding: 10px;
   height: 50px;
   color: var(--lb-light);
+  position: relative;
 }
 
 #lb-header.open {
   border-radius: 10px 0 0 0;
 }
 
+#lb-header h2 {
+  margin: 0;
+  padding: 0;
+  font-size: 1.5em;
+  /* display: inline-block; */
+}
+
+#lb-header h4 {
+  margin: 0;
+  padding: 0;
+  font-size: 12pt;
+  font-weight: 300;
+}
+
 #lb-tools {
-  color: var(--lighter);
-  float: right;
+  position: absolute;
+  right: 5px;
+  bottom: 10px;
 }
 
 #lb-body {
@@ -171,6 +179,8 @@ body {
 }
 
 #main {
+  width: auto;
+  display: inline-block;
 }
 
 #notebar {
@@ -205,6 +215,7 @@ body {
 #scorecard {
   margin-top: 15px;
   padding-left: 15px;
+  /* display: inline-block; */
   float: left;
   color: var(--lb);
   border-radius: 0 10px 10px 0;
