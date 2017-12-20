@@ -10,9 +10,11 @@
 
 // GLOBAL DOM VARIABLES -------------------------------------------------------
 let leaderboard = document.getElementById("leaderboard");
+let leaderHeader = document.getElementById("lb-header");
 let leaderTable = document.getElementById("lb-table");
 let scorecard = document.getElementById("scorecard");
 let scoreTable = document.getElementById("sc-table");
+let buttonToggleSc = document.getElementById("toggle-sc");
 let note = null;
 
 // DATA TYPE FUNCTIONS --------------------------------------------------------
@@ -214,6 +216,15 @@ function show(content) {
     note.dismiss();
   }
   note = new Notification(document.getElementById(content).innerHTML);
+}
+
+function toggleScorecard() {
+  scorecard.classList.toggle("hidden");
+  leaderboard.classList.toggle("open");
+  leaderHeader.classList.toggle("open");
+  buttonToggleSc.classList.toggle("on");
+  buttonToggleSc.innerHTML = buttonToggleSc.classList.contains("on") ?
+    '<i class="far fa-eye-slash fa-fw"></i>' : '<i class="fas fa-eye fa-fw"></i>';
 }
 
 // MAIN -----------------------------------------------------------------------

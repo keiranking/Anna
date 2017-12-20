@@ -34,6 +34,10 @@ body {
   /*position: relative;*/
 }
 
+button:focus {
+  outline: none;
+}
+
 #credits {
   font-size: 9.5pt;
   font-weight: 400;
@@ -98,7 +102,7 @@ body {
   width: auto;
   /* display: inline-block; */
   float: left;
-  margin: 15px 0 0 0;
+  margin: 0;
   border-radius: 10px;
   border: 1px solid var(--lb);
   /* padding: 8px; */
@@ -148,7 +152,7 @@ body {
   /* height: 40px; */
   margin: 0 0 0 8px;
   padding: 0;
-  font-size: 16pt;
+  font-size: 14pt;
   text-align: center;
   /* border-radius: 20px; */
   color: var(--lb-light);
@@ -157,31 +161,31 @@ body {
   /* border: 1px solid var(--lb-light); */
 }
 
+#lb-tools button.on {
+  /* color: white; */
+}
+
 #lb-tools button:hover {
   color: white;
 }
 
-#lb-tools button:hover:after {
+/* #lb-tools button:hover:after {
   content: attr(data-tooltip);
   margin: 4px 0;
   padding: 4px;
-  border: 1px solid var(--lb);
+  border: 1px solid white;
   border-radius: 2px;
-  background: white;
-  color: var(--lb);
+  background: var(--lb);
+  color: white;
   font-size: 9pt;
-  /*font-weight: 400;*/
   position: absolute;
   right: 0;
   top: 120%;
   white-space: nowrap;
   z-index: 20;
-}
+} */
 
 #lb-body {
-  /* min-height: 380px; */
-  /* background-color: var(--lb); */
-  /* border-radius: 0 0 10px 10px; */
 }
 
 #lb-body table {
@@ -202,7 +206,6 @@ body {
 #lb-body td.distance {
   color: var(--lb-light);
   padding: 5px 10px 5px 15px;
-  /* border-top: 1px solid white; */
 }
 
 #lb-body td.name {
@@ -210,11 +213,11 @@ body {
   color: white;
   letter-spacing: -0.03em;
   padding: 5px 0 5px 10px;
-  /* border-top: 1px solid white; */
 }
 
 #main {
   width: auto;
+  margin-top: 15px;
   display: inline-block;
 }
 
@@ -248,7 +251,7 @@ body {
 }
 
 #scorecard {
-  margin-top: 15px;
+  margin: 0;
   padding-left: 15px;
   /* display: inline-block; */
   float: left;
