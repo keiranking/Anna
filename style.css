@@ -13,12 +13,10 @@
   --darker: rgba(0, 0, 0, .5);
   --light: rgba(255, 255, 255, .25);
   --lighter: rgba(255, 255, 255, .5);
-  --sc-bkgd: #f2f8ff;
+  --sc-shaded: #f2f8ff;
   --sc-hover: #fafcff;
   --sc-shaded-hover: #ecf5fe;
   --score: #7fbefb;
-  /* --score: #81a4c5; */
-  /* --warning: red; */
 }
 
 body {
@@ -27,12 +25,6 @@ body {
   margin: 0;
   padding: 0;
   text-align: center;
-  /* min-width: 500px; */
-  /* min-height: 700px; */
-  /* user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none; */
-  /*position: relative;*/
 }
 
 button:focus {
@@ -46,7 +38,6 @@ button:focus {
   position: absolute;
   right: 5px;
   bottom: 5px;
-  /*margin: 2px 0 0 0;*/
 }
 
 #credits a {
@@ -54,7 +45,7 @@ button:focus {
   text-decoration: none;
 }
 
-#footer {
+/* #footer {
   margin: 5px;
   font-size: 9.5pt;
   font-weight: 400;
@@ -93,7 +84,7 @@ button:focus {
 
 #footer select:focus {
   outline: none;
-}
+} */
 
 .hidden {
   display: none;
@@ -132,7 +123,6 @@ button:focus {
   margin: 0;
   padding: 0;
   font-size: 1.5em;
-  /* display: inline-block; */
 }
 
 #lb-header h4 {
@@ -228,7 +218,7 @@ button:focus {
   bottom: 20px;
 }
 
-.notification {
+/* .notification {
   text-align: left;
   font-size: 9.5pt;
   line-height: 11pt;
@@ -249,11 +239,11 @@ button:focus {
   font-weight: 600;
   color: var(--med-grey);
   text-transform: uppercase;
-}
+} */
 
 #scorecard {
   margin: 0;
-  padding-left: 15px;
+  padding: 0 5px 0 15px;
   /* display: inline-block; */
   float: left;
   color: var(--lb);
@@ -261,12 +251,28 @@ button:focus {
   border: 1px solid var(--score);
 }
 
+#scorecard button {
+  color: var(--score);
+  text-align: center;
+  height: 36px;
+  width: 36px;
+  font-size: 14pt;
+  font-weight: 600;
+  padding: 6px 0;
+  border: 1px solid white;
+  border-radius: 5px;
+}
+
+#scorecard button:hover {
+  color: var(--lb);
+  border: 1px solid var(--lb);
+}
+
 #scorecard table {
   border-collapse: collapse;
 }
 
 #scorecard td {
-  /* min-height: 1em; */
   text-align: right;
   margin: 0;
   padding: 3px 3px 3px 0;
@@ -274,7 +280,6 @@ button:focus {
     -moz-user-select: none;
     -webkit-user-select: none;
   overflow: hidden;
-  /* border-left: 1px solid white; */
 }
 
 #scorecard .round {
@@ -292,9 +297,7 @@ button:focus {
   font-weight: 600;
   color: var(--lb);
   padding: 5px 3px 0 3px;
-  min-width: 85px;
-  /* font-weight: 600; */
-
+  min-width: 80px;
 }
 
 #scorecard .score {
@@ -305,22 +308,22 @@ button:focus {
   border-top: 1px dashed var(--score);
 }
 
+#scorecard .name:focus,
 #scorecard .score:focus {
   color: var(--lb);
   outline: 2px solid var(--lb);
 }
 
+#scorecard .name:hover,
 #scorecard .score:hover {
-  /* border: 1px solid var(--lb); */
-  /* outline: 2px solid var(--score); */
   background-color: var(--sc-hover);
-  /* opacity: 0.8; */
 }
 
 #scorecard .shaded {
-  background-color: var(--sc-bkgd);
+  background-color: var(--sc-shaded);
 }
 
+#scorecard .name.shaded:hover,
 #scorecard .score.shaded:hover {
   background-color: var(--sc-shaded-hover);
 }
@@ -334,6 +337,7 @@ button:focus {
 
 #scorecard .tools {
   min-width: 20px;
+  padding-left: 8px;
 }
 
 .warning {

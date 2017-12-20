@@ -13,7 +13,7 @@
             <button id="screenshot" type="button" data-tooltip="Save photo">
               <i class="fas fa-camera fa-fw"></i>
             </button>
-            <button id="toggle-sc" class="on" type="button" data-tooltip="Edit scores" onclick="toggleScorecard()">
+            <button id="toggle-sc" class="on" type="button" data-tooltip="Show/hide drawer" onclick="toggleScorecard()">
               <i class="far fa-eye-slash fa-fw"></i>
             </button>
           </div>
@@ -35,12 +35,12 @@
     <a href="https://github.com/keiranking/Anna" target="_blank">GitHub</a> &middot; Anna</div>
     <div id="notebar"></div>
   </div>
-  <!-- <div id="help" class="hidden">
-    <h3>Help</h3>
-    <p>Click the time to start or pause the clock.</p>
+  <!-- <div id="hidden-buttons" class="hidden">
+    <button id="x2" type="button" data-tooltip="Bend the board">x2</button>
   </div> -->
   <script src="third_party/fontawesome-all.js"></script>
   <script src="third_party/moment.js"></script>
+  <script src="third_party/html2canvas.min.js"></script>
   <script src="anna.js"></script>
 </body>
 </html>

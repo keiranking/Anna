@@ -7,6 +7,8 @@
 // └──────────────────────────────────────────────────────────────────────────┘
 
 // GLOBAL CONSTANTS ├──────────────────────────────────────────────────────────
+const VALID_SCORE_KEYCODES = [8, 9, 27, 37, 38, 39, 40, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57];
+const INVALID_NAME_KEYCODES = [13, 186, 187, 188, 190, 191, 219, 220, 221, 222];
 
 // GLOBAL DOM VARIABLES -------------------------------------------------------
 let leaderboard = document.getElementById("leaderboard");
@@ -62,18 +64,6 @@ Object.prototype.flatten = function() { // return flattened array of all nested 
 }
 
 // CLASSES --------------------------------------------------------------------
-class Player {
-  constructor(name) {
-    this.name = name;
-    this.scores = [];
-    console.log("New player: " + this.name + ".");
-  }
-
-  publish() { // send Player contents to UI
-    //
-  }
-}
-
 class Game {
   constructor(names) {
     console.log("New game.")
@@ -123,7 +113,7 @@ class Game {
       row.appendChild(dist);
       leaderTable.appendChild(row);
     }
-    document.getElementById("date").innerHTML = moment().format('ddd, D MMM YYYY');
+    document.getElementById("date").innerHTML = moment().format('D MMM YYYY');
     leaderboard.style.minHeight = scorecard.clientHeight < 480 ? 480 : scorecard.clientHeight;
     console.log("Leaderboard published.");
   }
@@ -140,6 +130,11 @@ class Game {
         name.innerHTML = this.players.list()[j - 1];
         name.setAttribute('contenteditable', 'true');
         name.classList.add("name");
+        name.addEventListener('keydown', function(e) { // prevent invalid data entry
+          if (INVALID_NAME_KEYCODES.indexOf(e.which) != -1) {
+            e.preventDefault();
+          }
+        });
         sum.innerHTML = this.players[this.players.list()[j - 1]].sum();
         sum.classList.add("sum");
       }
@@ -154,6 +149,9 @@ class Game {
     nameTools.classList.add("tools");
     let sumTools = document.createElement('TD'); // add extra cell for buttons
     sumTools.classList.add("tools");
+    let b = document.createElement('BUTTON');
+    b.innerHTML = '<i class="fas fa-plus fa-fw"></i>';
+    sumTools.appendChild(b);
     names.appendChild(nameTools);
     sums.appendChild(sumTools);
     scoreTable.appendChild(names);
@@ -171,6 +169,11 @@ class Game {
           cell.setAttribute('contenteditable', 'true');
           cell.setAttribute('data-player', this.players.list()[j - 1]);
           cell.setAttribute('data-index', i);
+          cell.addEventListener('keydown', function(e) { // prevent invalid data entry
+            if (VALID_SCORE_KEYCODES.indexOf(e.which) == -1) {
+              e.preventDefault();
+            }
+          });
           cell.addEventListener('focusout', function(e) { // push score from UI to Model, then update UI
             let td = e.target;
             const player = td.getAttribute('data-player');
@@ -189,7 +192,19 @@ class Game {
       }
       let roundTools = document.createElement('TD'); // add extra cell for buttons
       roundTools.classList.add("tools");
+      b = document.createElement('BUTTON');
+      b.innerHTML = "&#215;2";
+      b.classList.add("hidden");
+      roundTools.appendChild(b);
       round.appendChild(roundTools);
+      round.addEventListener('mouseover', function() {
+        round.lastChild.firstChild.classList.remove("hidden");
+      });
+      round.addEventListener('mouseout', function() {
+        if (!round.lastChild.firstChild.classList.contains("on")) {
+          round.lastChild.firstChild.classList.add("hidden");
+        }
+      });
       scoreTable.appendChild(round);
     }
     console.log("Scorecard published.");
@@ -231,6 +246,12 @@ function show(content) {
     note.dismiss();
   }
   note = new Notification(document.getElementById(content).innerHTML);
+}
+
+function takePhoto() {
+  html2canvas(document.getElementById("main")).then(function(canvas) {
+    document.body.appendChild(canvas);
+});
 }
 
 function toggleScorecard() {
