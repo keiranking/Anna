@@ -87,12 +87,14 @@ class Game {
       this.leaderboard = this.ranked();
     }
     this.publishScorecard();
+    this.publishLeaderboard();
   }
 
   seat(name) {
     this.players[name] = [];
     for (let i = 0; i < this.rounds.length; i++) {
-      this.players[name].push((0).random(180));
+      // this.players[name].push((0).random(180));
+      this.players[name].push(null);
     }
     console.log(name + " added to game.")
   }
@@ -122,15 +124,16 @@ class Game {
       leaderTable.appendChild(row);
     }
     document.getElementById("date").innerHTML = moment().format('ddd, D MMM YYYY');
-    leaderboard.style.minHeight = scorecard.clientHeight;
+    leaderboard.style.minHeight = scorecard.clientHeight < 480 ? 480 : scorecard.clientHeight;
     console.log("Leaderboard published.");
   }
 
   publishScorecard() {
     scoreTable.innerHTML = "";
+
     let names = document.createElement('TR');
     let sums = document.createElement('TR');
-    for (let j = 0; j <= this.players.list().length; j++) {
+    for (let j = 0; j <= this.players.list().length; j++) { // create header cells
       let name = document.createElement('TD');
       let sum = document.createElement('TD');
       if (j) {
@@ -140,39 +143,51 @@ class Game {
         sum.innerHTML = this.players[this.players.list()[j - 1]].sum();
         sum.classList.add("sum");
       }
-      if (j % 2){
+      if (j % 2){ // add stripes
         name.classList.add("shaded");
         sum.classList.add("shaded");
       }
       names.appendChild(name);
       sums.appendChild(sum);
     }
-    let nameTools = document.createElement('TD');
+    let nameTools = document.createElement('TD'); // add extra cell for buttons
     nameTools.classList.add("tools");
-    let sumTools = document.createElement('TD');
+    let sumTools = document.createElement('TD'); // add extra cell for buttons
     sumTools.classList.add("tools");
     names.appendChild(nameTools);
     sums.appendChild(sumTools);
     scoreTable.appendChild(names);
     scoreTable.appendChild(sums);
-    for (let i = 0; i < this.rounds.length; i++) {
+
+    for (let i = 0; i < this.rounds.length; i++) { // create body cells
       let round = document.createElement('TR');
       for (let j = 0; j <= this.players.list().length; j++) {
         let cell = document.createElement('TD');
-        if (!j) {
+        if (!j) { // this is a label cell
           cell.classList.add("round");
           cell.innerHTML = this.rounds[i];
-        } else {
+        } else { // this is a score cell
           cell.classList.add("score");
           cell.setAttribute('contenteditable', 'true');
+          cell.setAttribute('data-player', this.players.list()[j - 1]);
+          cell.setAttribute('data-index', i);
+          cell.addEventListener('focusout', function(e) { // push score from UI to Model, then update UI
+            let td = e.target;
+            const player = td.getAttribute('data-player');
+            const i = td.getAttribute('data-index');
+            const score = td.innerHTML === "" ? null : new Number(td.innerHTML);
+            this.players[player].splice(i, 1, score);
+            this.publishScorecard();
+            this.publishLeaderboard();
+          }.bind(this));
           cell.innerHTML = this.players[this.players.list()[j - 1]][i] || "";
         }
-        if (j % 2){
+        if (j % 2){ // add stripes
           cell.classList.add("shaded");
         }
         round.appendChild(cell);
       }
-      let roundTools = document.createElement('TD');
+      let roundTools = document.createElement('TD'); // add extra cell for buttons
       roundTools.classList.add("tools");
       round.appendChild(roundTools);
       scoreTable.appendChild(round);
@@ -229,6 +244,3 @@ function toggleScorecard() {
 
 // MAIN -----------------------------------------------------------------------
 let g = new Game(["Keiran", "Rae", "Joana", "Monique", "Dan"]);
-g.publishLeaderboard();
-g.publishScorecard();
-console.log(g.players.list(), g.leaderboard);

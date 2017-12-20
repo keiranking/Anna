@@ -1,5 +1,4 @@
-/* @import url('https://fonts.googleapis.com/css?family=Libre+Franklin:200,300,600'); */
-@import url('https://fonts.googleapis.com/css?family=Libre+Franklin:300,300i,600|Source+Code+Pro:300,400');
+@import url('https://fonts.googleapis.com/css?family=Libre+Franklin:300,300i,600');
 
 :root {
   --black: black;
@@ -14,7 +13,9 @@
   --darker: rgba(0, 0, 0, .5);
   --light: rgba(255, 255, 255, .25);
   --lighter: rgba(255, 255, 255, .5);
-  --score-bkgd: #f2f8ff;
+  --sc-bkgd: #f2f8ff;
+  --sc-hover: #fafcff;
+  --sc-shaded-hover: #ecf5fe;
   --score: #7fbefb;
   /* --score: #81a4c5; */
   /* --warning: red; */
@@ -26,11 +27,11 @@ body {
   margin: 0;
   padding: 0;
   text-align: center;
-  min-width: 500px;
-  min-height: 700px;
-  user-select: none;
+  /* min-width: 500px; */
+  /* min-height: 700px; */
+  /* user-select: none;
     -webkit-user-select: none;
-    -moz-user-select: none;
+    -moz-user-select: none; */
   /*position: relative;*/
 }
 
@@ -265,11 +266,15 @@ button:focus {
 }
 
 #scorecard td {
-  height: 1em;
+  /* min-height: 1em; */
   text-align: right;
   margin: 0;
   padding: 3px 3px 3px 0;
+  user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
   overflow: hidden;
+  /* border-left: 1px solid white; */
 }
 
 #scorecard .round {
@@ -287,7 +292,7 @@ button:focus {
   font-weight: 600;
   color: var(--lb);
   padding: 5px 3px 0 3px;
-  min-width: 60px;
+  min-width: 85px;
   /* font-weight: 600; */
 
 }
@@ -300,8 +305,24 @@ button:focus {
   border-top: 1px dashed var(--score);
 }
 
+#scorecard .score:focus {
+  color: var(--lb);
+  outline: 2px solid var(--lb);
+}
+
+#scorecard .score:hover {
+  /* border: 1px solid var(--lb); */
+  /* outline: 2px solid var(--score); */
+  background-color: var(--sc-hover);
+  /* opacity: 0.8; */
+}
+
 #scorecard .shaded {
-  background-color: var(--score-bkgd);
+  background-color: var(--sc-bkgd);
+}
+
+#scorecard .score.shaded:hover {
+  background-color: var(--sc-shaded-hover);
 }
 
 #scorecard .sum {
