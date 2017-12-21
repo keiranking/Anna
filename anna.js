@@ -70,6 +70,10 @@ class Game {
     this.players = {};
     this.leaderboard = [];
     this.rounds = ['333', '344', '344', '444', '3333', '3334', '3344', '3444', '4444'];
+    this.multipliers = [];
+    for (let i = 0; i < this.rounds.length; i++) {
+      this.multipliers.push(1);
+    }
     if (names) {
       for (const name of names) {
         this.seat(name);
@@ -95,23 +99,45 @@ class Game {
     }.bind(this));
   }
 
+  renamePlayer(e) { // still in dev
+    new_key = e.target.innerHTML;
+    if (old_key !== new_key) {
+      Object.defineProperty(o, new_key,
+        Object.getOwnPropertyDescriptor(o, old_key));
+      delete o[old_key];
+    }
+  }
+
   processScore(e) {
     let td = e.target;
     const player = td.getAttribute('data-player');
     const i = td.getAttribute('data-index');
-    const score = (td.innerHTML === "") ? null : new Number(td.innerHTML);
-    if (td.innerHTML == "0") {
-      console.log("Equals 0");
-      td.classList.add("win");
-      let img = new Image();
-      img.src = "images/win.svg";
-      td.innerHTML = "";
-      td.appendChild(img);
+    console.log(td.innerHTML, Number(td.innerHTML));
+    let score;
+    switch (td.innerHTML) {
+      case "":
+        score = null;
+        break;
+      case "0":
+        td.classList.add("win");
+        let img = new Image();
+        img.src = "images/win.svg";
+        td.innerHTML = "";
+        td.appendChild(img);
+      case '<img src="images/win.svg">':
+      case '<img src="images/bend.svg">':
+        score = 0;
+        break;
+      default:
+        score = Number(td.innerHTML) || null;
+        if (!score) {
+          td.innerHTML = "";
+        }
+        break;
     }
     this.players[player].splice(i, 1, score);
     let playerSum = document.getElementById("sums").querySelector('[data-player="' + player + '"]');
     playerSum.innerHTML = this.players[player].sum();
-    // this.publishScorecard();
     this.publishLeaderboard();
   }
 
@@ -151,6 +177,7 @@ class Game {
       if (j) {
         name.innerHTML = this.players.list()[j - 1];
         name.setAttribute('contenteditable', 'true');
+        name.setAttribute('data-player', this.players.list()[j - 1]);
         name.classList.add("name");
         name.addEventListener('keydown', function(e) { // prevent invalid data entry
           if (INVALID_NAME_KEYCODES.indexOf(e.which) != -1) {
@@ -225,6 +252,14 @@ class Game {
       scoreTable.appendChild(round);
     }
     console.log("Scorecard published.");
+  }
+
+  sum(player) {
+    let sum = 0;
+    for (let i = 0; i < this.rounds.length; i++) {
+      sum += this.players[player][i] * this.multipliers[i];
+    }
+    return sum;
   }
 }
 
