@@ -249,6 +249,7 @@ button:focus {
   color: var(--lb);
   border-radius: 0 10px 10px 0;
   border: 1px solid var(--score);
+  /* position: relative; */
 }
 
 #scorecard button {
@@ -261,12 +262,29 @@ button:focus {
   padding: 6px 0;
   border: 1px solid white;
   border-radius: 5px;
+  position: relative;
 }
 
 #scorecard button:hover {
   color: var(--lb);
   border: 1px solid var(--lb);
 }
+
+/* #scorecard button:hover:after {
+  content: attr(data-tooltip);
+  margin: 4px 0;
+  padding: 4px;
+  border: 1px solid white;
+  border-radius: 2px;
+  background: var(--lb);
+  color: white;
+  font-size: 9pt;
+  position: absolute;
+  left: 10%;
+  top: 0;
+  white-space: nowrap;
+  z-index: 2000;
+} */
 
 #scorecard table {
   border-collapse: collapse;
@@ -306,6 +324,14 @@ button:focus {
   padding-left: 25px;
   color: var(--score);
   border-top: 1px dashed var(--score);
+}
+
+#scorecard .score img {
+  width: 30px;
+  height: 30px;
+  padding-right: 2px;
+  margin: 0;
+  opacity: 0.8;
 }
 
 #scorecard .name:focus,

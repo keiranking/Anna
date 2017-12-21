@@ -95,6 +95,27 @@ class Game {
     }.bind(this));
   }
 
+  processScore(e) {
+    let td = e.target;
+    const player = td.getAttribute('data-player');
+    const i = td.getAttribute('data-index');
+    const score = (td.innerHTML === "") ? null : new Number(td.innerHTML);
+    if (td.innerHTML == "0") {
+      console.log("Equals 0");
+      td.classList.add("win");
+      let img = new Image();
+      img.src = "images/win.svg";
+      td.innerHTML = "";
+      td.appendChild(img);
+    }
+    this.players[player].splice(i, 1, score);
+    let playerSum = document.getElementById("sums").querySelector('[data-player="' + player + '"]');
+    playerSum.innerHTML = this.players[player].sum();
+    // this.publishScorecard();
+    this.publishLeaderboard();
+  }
+
+
   publishLeaderboard() {
     // Update leaderboard
     leaderTable.innerHTML = "";
@@ -123,6 +144,7 @@ class Game {
 
     let names = document.createElement('TR');
     let sums = document.createElement('TR');
+    sums.setAttribute('id', 'sums');
     for (let j = 0; j <= this.players.list().length; j++) { // create header cells
       let name = document.createElement('TD');
       let sum = document.createElement('TD');
@@ -136,6 +158,7 @@ class Game {
           }
         });
         sum.innerHTML = this.players[this.players.list()[j - 1]].sum();
+        sum.setAttribute('data-player', this.players.list()[j - 1]);
         sum.classList.add("sum");
       }
       if (j % 2){ // add stripes
@@ -150,7 +173,8 @@ class Game {
     let sumTools = document.createElement('TD'); // add extra cell for buttons
     sumTools.classList.add("tools");
     let b = document.createElement('BUTTON');
-    b.innerHTML = '<i class="fas fa-plus fa-fw"></i>';
+    b.innerHTML = '<i class="fas fa-user-plus fa-fw" data-fa-transform="grow-2 flip-h"></i>';
+    b.setAttribute('data-tooltip', "Add player");
     sumTools.appendChild(b);
     names.appendChild(nameTools);
     sums.appendChild(sumTools);
@@ -174,15 +198,7 @@ class Game {
               e.preventDefault();
             }
           });
-          cell.addEventListener('focusout', function(e) { // push score from UI to Model, then update UI
-            let td = e.target;
-            const player = td.getAttribute('data-player');
-            const i = td.getAttribute('data-index');
-            const score = td.innerHTML === "" ? null : new Number(td.innerHTML);
-            this.players[player].splice(i, 1, score);
-            this.publishScorecard();
-            this.publishLeaderboard();
-          }.bind(this));
+          cell.addEventListener('focusout', this.processScore.bind(this)); // push score from UI to Model, then update UI
           cell.innerHTML = this.players[this.players.list()[j - 1]][i] || "";
         }
         if (j % 2){ // add stripes
@@ -194,6 +210,7 @@ class Game {
       roundTools.classList.add("tools");
       b = document.createElement('BUTTON');
       b.innerHTML = "&#215;2";
+      b.setAttribute('data-tooltip', "Double scores");
       b.classList.add("hidden");
       roundTools.appendChild(b);
       round.appendChild(roundTools);
