@@ -178,6 +178,9 @@ button:focus {
 } */
 
 #lb-body {
+  user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
 }
 
 #lb-body table {
@@ -253,7 +256,7 @@ button:focus {
   /* position: relative; */
 }
 
-#scorecard button {
+#scorecard .tools button {
   color: var(--score);
   text-align: center;
   height: 36px;
@@ -266,13 +269,13 @@ button:focus {
   position: relative;
 }
 
-#scorecard button:hover {
+#scorecard .tools button:hover {
   background-color: var(--sc-shaded);
   color: var(--lb);
   /* border: 1px solid var(--lb); */
 }
 
-#scorecard button.on {
+#scorecard .tools button.on {
   background-color: var(--double);
   color: white;
 }
@@ -310,6 +313,24 @@ button:focus {
 
 #scorecard .double {
   color: var(--double);
+}
+
+#scorecard .footer {
+  text-align: center;
+  height: 12pt;
+}
+
+#scorecard .footer button {
+  margin: -3px 0 5px 0;
+  padding: 0;
+  font-size: 12pt;
+  background-color: rgba(255, 255, 255, 0);
+  border: 1px solid rgba(255, 255, 255, 0);
+  color: var(--score);
+}
+
+#scorecard .footer button:hover {
+  color: var(--lb);
 }
 
 #scorecard .round {

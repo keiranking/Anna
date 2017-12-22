@@ -9,6 +9,8 @@
 // GLOBAL CONSTANTS ├──────────────────────────────────────────────────────────
 const VALID_SCORE_KEYCODES = [8, 9, 27, 37, 38, 39, 40, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57];
 const INVALID_NAME_KEYCODES = [13, 186, 187, 188, 190, 191, 219, 220, 221, 222];
+const DEFAULT_PLAYERS = ["Anika", "Bella", "Carol", "Diallo", "Erin", "Franz", "Gina", "Hayden", "Izzy", "Jess", "Kai", "Laura",
+  "Mona", "Neil", "Owen", "Patty", "Qian", "Rudi", "Sharon", "Trudy", "Uta", "Val", "Wayne", "Xavier", "Yasmin", "Zola"];
 
 // GLOBAL DOM VARIABLES -------------------------------------------------------
 let leaderboard = document.getElementById("leaderboard");
@@ -27,7 +29,7 @@ Number.prototype.random = function(n, p = 0) { // return random number in range
 Array.prototype.pluck = function(n = 1) { // return random item, which is deleted from array
   let list = [];
   for (let i = 0; i < n; i++) {
-    const index = this.length.random();
+    const index = (0).random(this.length);
     list.push(this[index]);
     this.splice(index, 1);
   }
@@ -35,7 +37,7 @@ Array.prototype.pluck = function(n = 1) { // return random item, which is delete
 }
 
 Array.prototype.random = function() { // return random item from array
-  return this[this.length.random()];
+  return this[(0).random(this.length)];
 }
 
 Array.prototype.sum = function() { // return sum of array elements
@@ -115,7 +117,7 @@ class Leaderboard {
       leaderTable.appendChild(row);
     }
     document.getElementById("date").innerHTML = moment().format('D MMM YYYY');
-    leaderboard.style.minHeight = scorecard.clientHeight < 480 ? 480 : scorecard.clientHeight;
+    leaderboard.style.minHeight = scorecard.clientHeight < 506 ? 506 : scorecard.clientHeight;
     console.log("Leaderboard published.");
   }
 
@@ -136,6 +138,7 @@ class Game {
     console.log("New game.")
     this.players = {};
     this.rounds = ['333', '344', '344', '444', '3333', '3334', '3344', '3444', '4444'];
+    this.pool = DEFAULT_PLAYERS.slice();
     if (names) {
       for (const name of names) {
         this.seat(name);
@@ -150,14 +153,14 @@ class Game {
   }
 
   seat(name = null) {
-    const n = this.players.list().length;
     if (!name) {
-      name = "Player " + (n + 1);
+      if (!this.pool.length) {
+        this.pool = DEFAULT_PLAYERS.slice();
+      }
+      name = this.pool.pluck();
     }
-    this.players["Player " + (n + 1)] = new Player(name, this.rounds.length);
+    this.players[(0).random(10000000)] = new Player(name, this.rounds.length);
     console.log(name + " seated.")
-    // console.log(this.players["Player " + (n + 1)]);
-    // console.log("Players: ", this.players.list());
   }
 
   renamePlayer(e) {
@@ -177,6 +180,7 @@ class Game {
 
   processScore(e) {
     let td = e.target;
+    const isDoubled = td.parentNode.lastChild.firstChild.classList.contains("on") ? true : false;
     const player = td.getAttribute('data-player');
     const i = td.getAttribute('data-index');
     let score;
@@ -187,7 +191,7 @@ class Game {
       case "0":
         td.classList.add("win");
         let img = new Image();
-        img.src = "images/win.svg";
+        img.src = isDoubled ? "images/double.svg" : "images/win.svg";
         td.innerHTML = "";
         td.appendChild(img);
       case '<img src="images/win.svg">':
@@ -199,9 +203,7 @@ class Game {
         if (!score) {
           td.innerHTML = "";
         } else {
-          if (td.parentNode.lastChild.firstChild.classList.contains("on")) {
-            score *= -1;
-          }
+          score *= isDoubled ? -1 : 1;
         }
         break;
     }
@@ -309,6 +311,7 @@ class Game {
       }
       let roundTools = document.createElement('TD'); // add extra cell for buttons
       roundTools.classList.add("tools");
+      // roundTools.setAttribute('tabindex', -1);
       roundTools.setAttribute('data-index', i);
       b = document.createElement('BUTTON');
       b.innerHTML = "&#215;2";
@@ -331,6 +334,31 @@ class Game {
       });
       scoreTable.appendChild(round);
     }
+    let footer = document.createElement('TR');
+    for (let j = 0; j <= this.players.list().length; j++) { // create footer cells
+      let foot = document.createElement('TD');
+      if (j) {
+        let b = document.createElement('BUTTON');
+        b.innerHTML = '<i class="far fa-trash-alt fa-fw"></i>';
+        b.setAttribute('data-tooltip', "Delete player");
+        b.setAttribute('data-player', this.players.list()[j - 1]);
+        b.addEventListener('click', function(e) {
+          console.log(e.target.parentNode.parentNode);
+          delete this.players[e.target.parentNode.parentNode.getAttribute('data-player')];
+          this.publishScorecard();
+          this.leaderboard.publish();
+        }.bind(this));
+        foot.appendChild(b);
+        foot.setAttribute('data-player', this.players.list()[j - 1]);
+        foot.classList.add("footer");
+      }
+      if (j % 2){ // add stripes
+        foot.classList.add("shaded");
+      }
+      footer.appendChild(foot);
+    }
+    scoreTable.appendChild(footer);
+
     console.log("Scorecard published.");
   }
 
@@ -401,4 +429,4 @@ function toggleScorecard() {
 }
 
 // MAIN -----------------------------------------------------------------------
-let g = new Game(0, ["Angie", "Bobby", "Carol"]);
+let g = new Game(5);
