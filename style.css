@@ -17,6 +17,7 @@
   --sc-hover: #fafcff;
   --sc-shaded-hover: #ecf5fe;
   --score: #7fbefb;
+  --double: purple;
 }
 
 body {
@@ -270,6 +271,11 @@ button:focus {
   border: 1px solid var(--lb);
 }
 
+#scorecard button.on {
+  background-color: var(--double);
+  color: white;
+}
+
 /* #scorecard button:hover:after {
   content: attr(data-tooltip);
   margin: 4px 0;
@@ -291,6 +297,7 @@ button:focus {
 }
 
 #scorecard td {
+  color: var(--score);
   text-align: right;
   margin: 0;
   padding: 3px 3px 3px 0;
@@ -300,8 +307,12 @@ button:focus {
   overflow: hidden;
 }
 
+#scorecard .double {
+  color: var(--double);
+}
+
 #scorecard .round {
-  color: var(--score);
+  /* color: var(--score); */
   text-align: center;
   letter-spacing: .05em;
   font-size: 18pt;
@@ -322,7 +333,7 @@ button:focus {
   font-size: 24pt;
   height: 1.2em;
   padding-left: 25px;
-  color: var(--score);
+  /* color: var(--score); */
   border-top: 1px dashed var(--score);
 }
 

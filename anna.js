@@ -64,33 +64,30 @@ Object.prototype.flatten = function() { // return flattened array of all nested 
 }
 
 // CLASSES --------------------------------------------------------------------
-class Game {
-  constructor(names) {
-    console.log("New game.")
-    this.players = {};
-    this.leaderboard = [];
-    this.rounds = ['333', '344', '344', '444', '3333', '3334', '3344', '3444', '4444'];
-    this.multipliers = [];
-    for (let i = 0; i < this.rounds.length; i++) {
-      this.multipliers.push(1);
+class Player {
+  constructor(name, rounds) {
+    this.name = name;
+    this.scores = [];
+    for (let i = 0; i < rounds; i++) {
+      this.scores.push(null);
     }
-    if (names) {
-      for (const name of names) {
-        this.seat(name);
-      }
-      this.leaderboard = this.ranked();
-    }
-    this.publishScorecard();
-    this.publishLeaderboard();
   }
 
-  seat(name) {
-    this.players[name] = [];
-    for (let i = 0; i < this.rounds.length; i++) {
-      // this.players[name].push((0).random(180));
-      this.players[name].push(null);
+  sum() {
+    let total = 0;
+    for (let i = 0; i < this.scores.length; i++) {
+      total += this.scores[i] < 0 ? Math.abs(this.scores[i]) * 2 : this.scores[i];
     }
-    console.log(name + " added to game.")
+    return total;
+  }
+
+}
+
+class Leaderboard {
+  constructor(players = {}) {
+    this.players = players;
+    console.log("New leaderboard.");
+    this.publish();
   }
 
   ranked() {
@@ -99,20 +96,89 @@ class Game {
     }.bind(this));
   }
 
-  renamePlayer(e) { // still in dev
-    new_key = e.target.innerHTML;
-    if (old_key !== new_key) {
-      Object.defineProperty(o, new_key,
-        Object.getOwnPropertyDescriptor(o, old_key));
-      delete o[old_key];
+  publish() {
+    leaderTable.innerHTML = "";
+    for (let i = 0; i < this.players.list().length; i++) {
+      let row = document.createElement('TR');
+      row.setAttribute('data-rank', i + 1);
+      let name = document.createElement('TD');
+      name.classList.add('name');
+      // console.log(this.ranked()[i]);
+      name.innerHTML = this.players[this.ranked()[i]].name;
+      let dist = document.createElement('TD');
+      dist.setAttribute('class', 'distance');
+      if (i > 0) {
+        dist.innerHTML = "+" + (this.players[this.ranked()[i]].sum() - this.players[this.ranked()[0]].sum());
+      }
+      row.appendChild(name);
+      row.appendChild(dist);
+      leaderTable.appendChild(row);
     }
+    document.getElementById("date").innerHTML = moment().format('D MMM YYYY');
+    leaderboard.style.minHeight = scorecard.clientHeight < 480 ? 480 : scorecard.clientHeight;
+    console.log("Leaderboard published.");
+  }
+
+}
+
+class Scorecard {
+  constructor() {
+
+  }
+
+  publish() {
+
+  }
+}
+
+class Game {
+  constructor(n = 3, names = null) {
+    console.log("New game.")
+    this.players = {};
+    this.rounds = ['333', '344', '344', '444', '3333', '3334', '3344', '3444', '4444'];
+    if (names) {
+      for (const name of names) {
+        this.seat(name);
+      }
+    }
+    for (let i = 0; i < n; i++) {
+      this.seat();
+    }
+
+    this.publishScorecard();
+    this.leaderboard = new Leaderboard(this.players);
+  }
+
+  seat(name = null) {
+    const n = this.players.list().length;
+    if (!name) {
+      name = "Player " + (n + 1);
+    }
+    this.players["Player " + (n + 1)] = new Player(name, this.rounds.length);
+    console.log(name + " seated.")
+    // console.log(this.players["Player " + (n + 1)]);
+    // console.log("Players: ", this.players.list());
+  }
+
+  renamePlayer(e) {
+    console.log(this.players.list());
+    let td = e.target;
+    const player = td.getAttribute('data-player');
+    const newName = td.innerHTML;
+    this.players[player].name = newName;
+    this.publishScorecard();
+    this.leaderboard.publish();
+    console.log(this.players.list());
+  }
+
+  getPlayerTotals() {
+
   }
 
   processScore(e) {
     let td = e.target;
     const player = td.getAttribute('data-player');
     const i = td.getAttribute('data-index');
-    console.log(td.innerHTML, Number(td.innerHTML));
     let score;
     switch (td.innerHTML) {
       case "":
@@ -132,37 +198,25 @@ class Game {
         score = Number(td.innerHTML) || null;
         if (!score) {
           td.innerHTML = "";
+        } else {
+          if (td.parentNode.lastChild.firstChild.classList.contains("on")) {
+            score *= -1;
+          }
         }
         break;
     }
-    this.players[player].splice(i, 1, score);
+    this.players[player].scores.splice(i, 1, score);
     let playerSum = document.getElementById("sums").querySelector('[data-player="' + player + '"]');
     playerSum.innerHTML = this.players[player].sum();
-    this.publishLeaderboard();
+    this.leaderboard.publish();
   }
 
-
-  publishLeaderboard() {
-    // Update leaderboard
-    leaderTable.innerHTML = "";
-    for (let i = 0; i < this.players.list().length; i++) {
-      let row = document.createElement('TR');
-      row.setAttribute('data-rank', i + 1);
-      let name = document.createElement('TD');
-      name.classList.add('name');
-      name.innerHTML = this.ranked()[i];
-      let dist = document.createElement('TD');
-      dist.setAttribute('class', 'distance');
-      if (i > 0) {
-        dist.innerHTML = "+" + (this.players[this.ranked()[i]].sum() - this.players[this.ranked()[0]].sum());
-      }
-      row.appendChild(name);
-      row.appendChild(dist);
-      leaderTable.appendChild(row);
+  sumRound(i) {
+    let total = 0;
+    for (const name of this.players.list()) {
+      total += this.players[name].scores[i];
     }
-    document.getElementById("date").innerHTML = moment().format('D MMM YYYY');
-    leaderboard.style.minHeight = scorecard.clientHeight < 480 ? 480 : scorecard.clientHeight;
-    console.log("Leaderboard published.");
+    return total;
   }
 
   publishScorecard() {
@@ -175,7 +229,8 @@ class Game {
       let name = document.createElement('TD');
       let sum = document.createElement('TD');
       if (j) {
-        name.innerHTML = this.players.list()[j - 1];
+        // console.log(this.players.list()[j - 1]);
+        name.innerHTML = this.players[this.players.list()[j - 1]].name;
         name.setAttribute('contenteditable', 'true');
         name.setAttribute('data-player', this.players.list()[j - 1]);
         name.classList.add("name");
@@ -184,6 +239,7 @@ class Game {
             e.preventDefault();
           }
         });
+        name.addEventListener('focusout', this.renamePlayer.bind(this));
         sum.innerHTML = this.players[this.players.list()[j - 1]].sum();
         sum.setAttribute('data-player', this.players.list()[j - 1]);
         sum.classList.add("sum");
@@ -202,6 +258,11 @@ class Game {
     let b = document.createElement('BUTTON');
     b.innerHTML = '<i class="fas fa-user-plus fa-fw" data-fa-transform="grow-2 flip-h"></i>';
     b.setAttribute('data-tooltip', "Add player");
+    b.addEventListener('click', function() {
+      this.seat();
+      this.publishScorecard();
+      this.leaderboard.publish();
+    }.bind(this));
     sumTools.appendChild(b);
     names.appendChild(nameTools);
     sums.appendChild(sumTools);
@@ -210,6 +271,7 @@ class Game {
 
     for (let i = 0; i < this.rounds.length; i++) { // create body cells
       let round = document.createElement('TR');
+      const isDoubled = this.sumRound(i) < 0 ? true : false;
       for (let j = 0; j <= this.players.list().length; j++) {
         let cell = document.createElement('TD');
         if (!j) { // this is a label cell
@@ -217,6 +279,9 @@ class Game {
           cell.innerHTML = this.rounds[i];
         } else { // this is a score cell
           cell.classList.add("score");
+          if (isDoubled) {
+            cell.classList.add("double");
+          }
           cell.setAttribute('contenteditable', 'true');
           cell.setAttribute('data-player', this.players.list()[j - 1]);
           cell.setAttribute('data-index', i);
@@ -226,7 +291,7 @@ class Game {
             }
           });
           cell.addEventListener('focusout', this.processScore.bind(this)); // push score from UI to Model, then update UI
-          cell.innerHTML = this.players[this.players.list()[j - 1]][i] || "";
+          cell.innerHTML = Math.abs(this.players[this.players.list()[j - 1]].scores[i]) || "";
         }
         if (j % 2){ // add stripes
           cell.classList.add("shaded");
@@ -235,10 +300,16 @@ class Game {
       }
       let roundTools = document.createElement('TD'); // add extra cell for buttons
       roundTools.classList.add("tools");
+      roundTools.setAttribute('data-index', i);
       b = document.createElement('BUTTON');
       b.innerHTML = "&#215;2";
       b.setAttribute('data-tooltip', "Double scores");
-      b.classList.add("hidden");
+      b.addEventListener('click', this.toggleDouble.bind(this));
+      if (isDoubled) {
+        b.classList.add("on");
+      } else {
+        b.classList.add("hidden");
+      }
       roundTools.appendChild(b);
       round.appendChild(roundTools);
       round.addEventListener('mouseover', function() {
@@ -254,12 +325,14 @@ class Game {
     console.log("Scorecard published.");
   }
 
-  sum(player) {
-    let sum = 0;
-    for (let i = 0; i < this.rounds.length; i++) {
-      sum += this.players[player][i] * this.multipliers[i];
+  toggleDouble(e) {
+    const i = e.target.parentNode.getAttribute('data-index');
+    for (const name of this.players.list()) {
+      this.players[name].scores[i] *= -1;
     }
-    return sum;
+    // console.log(this.players["Player 3"].scores);
+    this.publishScorecard();
+    this.leaderboard.publish();
   }
 }
 
@@ -316,4 +389,4 @@ function toggleScorecard() {
 }
 
 // MAIN -----------------------------------------------------------------------
-let g = new Game(["Keiran", "Rae", "Joana", "Monique", "Dan"]);
+let g = new Game(0, ["Keiran", "Rae", "Joana", "Monique", "Dan"]);
