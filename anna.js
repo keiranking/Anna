@@ -191,7 +191,7 @@ class Game {
         td.innerHTML = "";
         td.appendChild(img);
       case '<img src="images/win.svg">':
-      case '<img src="images/bend.svg">':
+      case '<img src="images/double.svg">':
         score = 0;
         break;
       default:
@@ -206,6 +206,7 @@ class Game {
         break;
     }
     this.players[player].scores.splice(i, 1, score);
+    // console.log(this.players[player].name, this.players[player].scores);
     let playerSum = document.getElementById("sums").querySelector('[data-player="' + player + '"]');
     playerSum.innerHTML = this.players[player].sum();
     this.leaderboard.publish();
@@ -291,7 +292,15 @@ class Game {
             }
           });
           cell.addEventListener('focusout', this.processScore.bind(this)); // push score from UI to Model, then update UI
-          cell.innerHTML = Math.abs(this.players[this.players.list()[j - 1]].scores[i]) || "";
+          let sc = this.players[this.players.list()[j - 1]].scores[i];
+          if (sc === 0) {
+            let img = new Image();
+            img.src = isDoubled ? "images/double.svg" : "images/win.svg";
+            cell.appendChild(img);
+            console.log("score is 0");
+          } else {
+            cell.innerHTML = Math.abs(sc) || "";
+          }
         }
         if (j % 2){ // add stripes
           cell.classList.add("shaded");
@@ -328,7 +337,10 @@ class Game {
   toggleDouble(e) {
     const i = e.target.parentNode.getAttribute('data-index');
     for (const name of this.players.list()) {
-      this.players[name].scores[i] *= -1;
+      const sc = this.players[name].scores[i];
+      if (sc !== null) {
+        this.players[name].scores[i] *= -1;
+      }
     }
     // console.log(this.players["Player 3"].scores);
     this.publishScorecard();
@@ -389,4 +401,4 @@ function toggleScorecard() {
 }
 
 // MAIN -----------------------------------------------------------------------
-let g = new Game(0, ["Keiran", "Rae", "Joana", "Monique", "Dan"]);
+let g = new Game(0, ["Angie", "Bobby", "Carol"]);

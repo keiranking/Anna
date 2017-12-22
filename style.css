@@ -17,7 +17,7 @@
   --sc-hover: #fafcff;
   --sc-shaded-hover: #ecf5fe;
   --score: #7fbefb;
-  --double: purple;
+  --double: #804fb3;
 }
 
 body {
@@ -267,8 +267,9 @@ button:focus {
 }
 
 #scorecard button:hover {
+  background-color: var(--sc-shaded);
   color: var(--lb);
-  border: 1px solid var(--lb);
+  /* border: 1px solid var(--lb); */
 }
 
 #scorecard button.on {
