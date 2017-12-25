@@ -7,10 +7,11 @@
 // └──────────────────────────────────────────────────────────────────────────┘
 
 // GLOBAL CONSTANTS ├──────────────────────────────────────────────────────────
+const ENTER_KEY = 13;
 const VALID_SCORE_KEYCODES = [8, 9, 27, 37, 38, 39, 40, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57];
 const INVALID_NAME_KEYCODES = [13, 186, 187, 188, 190, 191, 219, 220, 221, 222];
-const DEFAULT_PLAYERS = ["Anika", "Bella", "Carol", "Diallo", "Erin", "Franz", "Gina", "Hayden", "Izzy", "Jess", "Kai", "Laura",
-  "Mona", "Neil", "Owen", "Patty", "Qian", "Rudi", "Sharon", "Trudy", "Uta", "Val", "Wayne", "Xavier", "Yasmin", "Zola"];
+const DEFAULT_PLAYERS = ["Asha", "Bella", "Carol", "Diallo", "Ethan", "Franz", "Gina", "Hayden", "Izzy", "Jade", "Kai", "Lisa",
+  "Mark", "Nadine", "Odale", "Patty", "Qian", "Rudi", "Sharon", "Trudy", "Uta", "Val", "Wayne", "Xavier", "Yasmin", "Zola"];
 
 // GLOBAL DOM VARIABLES -------------------------------------------------------
 let leaderboard = document.getElementById("leaderboard");
@@ -98,6 +99,14 @@ class Leaderboard {
     }.bind(this));
   }
 
+  // renamePlayer(e) {
+  //   let td = e.target;
+  //   const player = td.getAttribute('data-player');
+  //   const newName = td.innerHTML;
+  //   this.players[player].name = newName;
+  //   this.leaderboard.publish();
+  // }
+
   publish() {
     leaderTable.innerHTML = "";
     for (let i = 0; i < this.players.list().length; i++) {
@@ -105,6 +114,7 @@ class Leaderboard {
       row.setAttribute('data-rank', i + 1);
       let name = document.createElement('TD');
       name.classList.add('name');
+      name.setAttribute('data-player', this.ranked()[i]);
       // console.log(this.ranked()[i]);
       name.innerHTML = this.players[this.ranked()[i]].name;
       let dist = document.createElement('TD');
@@ -164,14 +174,14 @@ class Game {
   }
 
   renamePlayer(e) {
-    console.log(this.players.list());
+    // console.log(this.players.list());
     let td = e.target;
     const player = td.getAttribute('data-player');
     const newName = td.innerHTML;
     this.players[player].name = newName;
     this.publishScorecard();
     this.leaderboard.publish();
-    console.log(this.players.list());
+    // console.log(this.players.list());
   }
 
   getPlayerTotals() {
@@ -292,6 +302,15 @@ class Game {
             if (VALID_SCORE_KEYCODES.indexOf(e.which) == -1) {
               e.preventDefault();
             }
+            if (e.which == ENTER_KEY) {
+              e.target.nextSibling.focus(); // tab to next score in row
+              if (e.target == e.target.parentNode.lastChild.previousSibling) { // if last score in round
+                e.target.parentNode.nextSibling.firstChild.nextSibling.focus(); // tab to first score in next round
+                if (e.target.parentNode == e.target.parentNode.parentNode.lastChild.previousSibling) { // if last score in table
+                  e.target.parentNode.parentNode.children[2].children[1].focus(); // tab to first score in first round
+                }
+              }
+            }
           });
           cell.addEventListener('focusout', this.processScore.bind(this)); // push score from UI to Model, then update UI
           let sc = this.players[this.players.list()[j - 1]].scores[i];
@@ -299,7 +318,6 @@ class Game {
             let img = new Image();
             img.src = isDoubled ? "images/double.svg" : "images/win.svg";
             cell.appendChild(img);
-            console.log("score is 0");
           } else {
             cell.innerHTML = Math.abs(sc) || "";
           }
@@ -343,7 +361,7 @@ class Game {
         b.setAttribute('data-tooltip', "Delete player");
         b.setAttribute('data-player', this.players.list()[j - 1]);
         b.addEventListener('click', function(e) {
-          console.log(e.target.parentNode.parentNode);
+          // console.log(e.target.parentNode.parentNode);
           delete this.players[e.target.parentNode.parentNode.getAttribute('data-player')];
           this.publishScorecard();
           this.leaderboard.publish();
