@@ -147,7 +147,7 @@ class Game {
   constructor(n = 3, names = null) {
     console.log("New game.")
     this.players = {};
-    this.rounds = ['333', '344', '344', '444', '3333', '3334', '3344', '3444', '4444'];
+    this.rounds = ['333', '334', '344', '444', '3333', '3334', '3344', '3444', '4444'];
     this.pool = DEFAULT_PLAYERS.slice();
     if (names) {
       for (const name of names) {
@@ -169,7 +169,7 @@ class Game {
       }
       name = this.pool.pluck();
     }
-    this.players[(0).random(10000000)] = new Player(name, this.rounds.length);
+    this.players[Date.now() + Math.random()] = new Player(name, this.rounds.length);
     console.log(name + " seated.")
   }
 
