@@ -1,6 +1,6 @@
 # Anna, a kalooki scorecard
 
-<img src="images/screenshot.png" align="right" width="305" height="525">
+<img src="images/screenshot.png" align="right" width="272" height="464">
 
 Anna is a scorecard for [kalooki](https://en.wikipedia.org/wiki/Kalooki), the most popular Jamaican card game.
 
