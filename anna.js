@@ -8,7 +8,7 @@
 
 // GLOBAL CONSTANTS ├──────────────────────────────────────────────────────────
 const ENTER_KEY = 13;
-const VALID_SCORE_KEYCODES = [8, 9, 27, 37, 38, 39, 40, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57];
+const VALID_SCORE_KEYCODES = [8, 9, 27, 37, 38, 39, 40, 46, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105];
 const INVALID_NAME_KEYCODES = [13, 186, 187, 188, 190, 191, 219, 220, 221, 222];
 const DEFAULT_PLAYERS = ["Asha", "Bella", "Carol", "Diallo", "Ethan", "Franz", "Gina", "Hayden", "Izzy", "Jade", "Kai", "Lisa",
   "Mark", "Nadine", "Odale", "Patty", "Qian", "Rudi", "Sharon", "Trudy", "Uta", "Val", "Wayne", "Xavier", "Yasmin", "Zola"];
