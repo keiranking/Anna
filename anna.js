@@ -446,5 +446,12 @@ function toggleScorecard() {
     '<i class="far fa-eye-slash fa-fw"></i>' : '<i class="fas fa-eye fa-fw"></i>';
 }
 
+function zoomIn() {
+  // console.log(document.body.style.transform);
+  document.getElementById("main").style.transform = 'scale(' + 1.2 + ')';
+  // document.body.style.transform *= 1.1;
+  // this.blur();
+}
+
 // MAIN -----------------------------------------------------------------------
 let g = new Game(5);

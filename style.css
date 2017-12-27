@@ -26,6 +26,7 @@ body {
   margin: 0;
   padding: 0;
   text-align: center;
+  /* transform: scale(1); */
 }
 
 button:focus {
@@ -46,59 +47,14 @@ button:focus {
   text-decoration: none;
 }
 
-/* #footer {
-  margin: 5px;
-  font-size: 9.5pt;
-  font-weight: 400;
-  color: var(--med-grey);
-  position: absolute;
-  left: 0px;
-  bottom: 0px;
-}
-
-#footer a {
-  margin: 0;
-  padding: 3px 5px;
-  border: 1px solid white;
-  border-radius: 4px;
-}
-
-#footer a:hover {
-  border: 1px solid var(--dk-grey);
-  color: var(--dk-grey);
-}
-
-#footer select {
-  font-family: 'Libre Franklin', 'Helvetica', 'Arial', sans-serif;
-  font-size: 9.5pt;
-  margin: 0 5px 0 0;
-  padding: 0;
-  border: 1px solid white;
-  color: var(--med-grey);
-  background-color: white;
-}
-
-#footer select:hover {
-  border: 1px solid var(--dk-grey);
-  color: var(--dk-grey);
-}
-
-#footer select:focus {
-  outline: none;
-} */
-
 .hidden {
   display: none;
 }
 
 #leaderboard {
-  width: auto;
-  /* display: inline-block; */
-  float: left;
   margin: 0;
   border-radius: 10px;
   border: 1px solid var(--lb);
-  /* padding: 8px; */
   background-color: var(--lb);
   text-align: left;
 }
@@ -161,22 +117,6 @@ button:focus {
   color: white;
 }
 
-/* #lb-tools button:hover:after {
-  content: attr(data-tooltip);
-  margin: 4px 0;
-  padding: 4px;
-  border: 1px solid white;
-  border-radius: 2px;
-  background: var(--lb);
-  color: white;
-  font-size: 9pt;
-  position: absolute;
-  right: 0;
-  top: 120%;
-  white-space: nowrap;
-  z-index: 20;
-} */
-
 #lb-body {
   user-select: none;
     -moz-user-select: none;
@@ -212,8 +152,9 @@ button:focus {
 
 #main {
   width: auto;
+  display: flex;
+  justify-content: center;
   margin-top: 15px;
-  display: inline-block;
 }
 
 #notebar {
@@ -222,38 +163,13 @@ button:focus {
   bottom: 20px;
 }
 
-/* .notification {
-  text-align: left;
-  font-size: 9.5pt;
-  line-height: 11pt;
-  margin: 12px;
-  padding: 12px;
-  max-width: 300px;
-  border-radius: 6px;
-  background-color: var(--dk-grey);
-  color: var(--lt-grey);
-  z-index: 30;
-  float: left;
-}
-
-.notification h3 {
-  font-size: 9pt;
-  margin: 0;
-  padding: 0;
-  font-weight: 600;
-  color: var(--med-grey);
-  text-transform: uppercase;
-} */
-
 #scorecard {
   margin: 0;
   padding: 0 5px 0 15px;
-  /* display: inline-block; */
-  float: left;
+  height: 506px;
   color: var(--lb);
   border-radius: 0 10px 10px 0;
   border: 1px solid var(--score);
-  /* position: relative; */
 }
 
 #scorecard .tools button {
@@ -272,7 +188,6 @@ button:focus {
 #scorecard .tools button:hover {
   background-color: var(--sc-shaded);
   color: var(--lb);
-  /* border: 1px solid var(--lb); */
 }
 
 #scorecard .tools button.on {
